@@ -1,0 +1,271 @@
+.container {
+  min-height: 100vh;
+  padding: 24px clamp(16px, 5vw, 32px) 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: clamp(28px, 7vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  color: #6b6b6b;
+  font-size: 0.95rem;
+}
+
+.searchField {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid #e5e2dc;
+  padding: 14px 18px;
+  background: #ffffff;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.ghostButton,
+.accentButton {
+  flex: 1;
+  border-radius: 16px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  background: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.accentButton {
+  background: #c67a52;
+  color: #ffffff;
+  border-color: #c67a52;
+}
+
+.ghostButton {
+  border-color: #d0ccc4;
+  color: #2c2c2c;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e2dc;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.starButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.favorite {
+  color: #c67a52;
+}
+
+.deleteButton {
+  color: #c4574c;
+}
+
+.emptyState {
+  color: #6b6b6b;
+  padding: 32px 0;
+  text-align: center;
+}
+
+.recipePanel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 14px;
+}
+
+.panelContent {
+  background: #ffffff;
+  border-radius: 24px;
+  width: min(520px, 100%);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panelActions {
+  display: flex;
+  gap: 8px;
+}
+
+.panelTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.closeButton {
+  border: none;
+  background: #f0ece6;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.dangerButton {
+  border: none;
+  background: #fbeaea;
+  color: #c4574c;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.sectionTitle {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: #6b6b6b;
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px;
+  z-index: 10;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 24px;
+  width: min(540px, 100%);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modalTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #6b6b6b;
+}
+
+.input,
+.textarea {
+  border-radius: 16px;
+  border: 1px solid #e5e2dc;
+  padding: 12px 16px;
+  background: #f5f2ec;
+  font-size: 1rem;
+}
+
+.textarea {
+  min-height: 100px;
+}
+
+.buttonsRow {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.secondaryBtn,
+.primaryBtn {
+  border-radius: 16px;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  background: #ffffff;
+  border-color: #d0ccc4;
+  color: #2c2c2c;
+}
+
+.primaryBtn {
+  background: #c67a52;
+  color: #ffffff;
+  border-color: #c67a52;
+}
+
+.importArea {
+  min-height: 160px;
+}
+
+.error {
+  color: #c4574c;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-top: 40px;
+  }
+}
