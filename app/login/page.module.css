@@ -7,7 +7,7 @@
 }
 
 .device {
-  width: min(520px, 100%);
+  width: 100%;
   max-width: 520px;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@
 }
 
 .heroImage img {
-  width: auto;
+  width: 100%;
   height: auto;
   display: block;
   border-radius: inherit;
