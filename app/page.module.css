@@ -1,59 +1,80 @@
+
 .container {
   min-height: 100vh;
-  padding: 24px clamp(16px, 5vw, 32px) 40px;
+  padding: 32px clamp(16px, 5vw, 32px) 48px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 520px;
+  max-width: 420px;
   margin: 0 auto;
 }
-
 
 .hero {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 16px;
   padding: 0 15px;
 }
 
-.heroHeader {
+.heroToolbar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  justify-content: flex-end;
 }
 
-.title {
-  font-size: clamp(32px, 8vw, 36px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin: 0;
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.logoWrapper {
+  width: 220px;
+  height: 147px;
+  position: relative;
+}
+
+.logoWrapper :global(img) {
+  object-fit: contain;
 }
 
 .tagline {
   color: #6b6b6b;
   font-size: 1rem;
-  margin: 4px 0 0;
+  margin: 0;
+  text-align: center;
 }
 
-.searchRow {
+.searchCard {
   display: flex;
+  align-items: center;
   gap: 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e2dc;
+  background: #ffffff;
+  padding: 12px 18px;
 }
 
-.searchField {
+.searchInput {
   flex: 1;
-  border-radius: 8px;
-  border: 1px solid #e5e2dc;
-  padding: 14px 18px;
-  background: #ffffff;
+  border: none;
+  background: transparent;
   font-size: 1rem;
+  color: #2c2c2c;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.searchInput::placeholder {
   color: #9a9a9a;
 }
 
-.voiceButton {
-  width: 44px;
-  height: 44px;
+.searchIconButton {
+  width: 36px;
+  height: 36px;
   border-radius: 999px;
   border: none;
   background: #fff2ea;
@@ -64,15 +85,9 @@
   cursor: pointer;
 }
 
-.voiceButton:disabled {
+.searchIconButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.voiceActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 .voiceClear {
@@ -88,6 +103,7 @@
 .actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .ghostButton,
@@ -122,6 +138,13 @@
   gap: 12px;
 }
 
+.sectionLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b6b6b;
+  padding-left: 4px;
+}
+
 .card {
   background: #ffffff;
   border-radius: 16px;
@@ -130,7 +153,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   cursor: pointer;
 }
 
@@ -139,22 +162,35 @@
   font-weight: 600;
 }
 
+.cardMeta {
+  color: #6b6b6b;
+  font-size: 0.9rem;
+}
+
 .starButton {
   width: 32px;
   height: 32px;
   border-radius: 999px;
   border: none;
-  background: transparent;
+  background: #fff2ea;
+  box-shadow: 0 6px 16px rgba(198, 122, 82, 0.15);
   font-size: 1.2rem;
   cursor: pointer;
+  color: #c67a52;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .favorite {
-  color: #c67a52;
+  color: #ffffff;
+  background: #c67a52;
 }
 
 .deleteButton {
   color: #c4574c;
+  background: #fbeaea;
+  box-shadow: 0 6px 16px rgba(196, 87, 76, 0.15);
 }
 
 .emptyState {
@@ -496,14 +532,21 @@
 }
 .logoutButton {
   border: none;
-  background: transparent;
-  color: #6b6b6b;
-  font-weight: 600;
+  background: #fff2ea;
+  color: #c67a52;
   cursor: pointer;
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(198, 122, 82, 0.15);
 }
 
 .logoutButton:hover {
-  color: #c4574c;
+  background: #ffd1b4;
+  color: #a85831;
 }
 .voiceFeedback {
   margin-top: 8px;

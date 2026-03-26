@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Camera, Check, ImageDown, Mic, Pencil, Plus, Star, Trash2, UploadCloud, Wand2, X } from "lucide-react";
+import { Camera, Check, ImageDown, LogOut, Mic, Pencil, Star, Trash2, UploadCloud, Wand2, X } from "lucide-react";
 
 import type { ParsedRecipe } from "@/lib/recipe-import";
 import type { Recipe, RecipePayload } from "@/types/recipe";
@@ -636,15 +637,18 @@ export default function Home() {
 
   return (
     <main className={styles.container}>
+      <h1 className="sr-only">Cozya</h1>
       <section className={styles.hero}>
-        <div className={styles.heroHeader}>
-          <div>
-            <h1 className={styles.title}>Lanche de Pai</h1>
-            <p className={styles.tagline}>Receitas rápidas sempre visíveis.</p>
-          </div>
-          <button className={styles.logoutButton} onClick={() => void handleLogout()}>
-            Sair
+        <div className={styles.heroToolbar}>
+          <button className={styles.logoutButton} onClick={() => void handleLogout()} aria-label="Sair">
+            <LogOut size={18} aria-hidden="true" />
           </button>
+        </div>
+        <div className={styles.brand}>
+          <div className={styles.logoWrapper}>
+            <Image src="/images/cozya-logo.png" fill sizes="220px" alt="Logo do Cozya" priority />
+          </div>
+          <p className={styles.tagline}>Receitas rápidas sempre visíveis.</p>
         </div>
       </section>
 
@@ -654,10 +658,10 @@ export default function Home() {
         </p>
       )}
 
-      <div className={styles.searchRow}>
+      <div className={styles.searchCard}>
         <input
           aria-label="Buscar receitas"
-          className={styles.searchField}
+          className={styles.searchInput}
           placeholder="O que vamos fazer?"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -665,7 +669,7 @@ export default function Home() {
         />
         <button
           type="button"
-          className={styles.voiceButton}
+          className={styles.searchIconButton}
           aria-label={speechActive ? "Parar ditado" : "Buscar com voz"}
           onClick={() => (speechActive ? handleStopListening() : handleStartListening())}
         >
@@ -685,30 +689,32 @@ export default function Home() {
           <span>Importar receita</span>
         </button>
         <button className={styles.accentButton} onClick={openCreate}>
-          <Plus size={18} aria-hidden="true" />
-          <span>Nova</span>
+          <span>+ Nova Receita</span>
         </button>
       </div>
 
+      <p className={styles.sectionLabel}>Receitas salvas</p>
       <section className={styles.list}>
         {loading && <p className={styles.emptyState}>Carregando receitas...</p>}
         {!loading && orderedRecipes.length === 0 && (
           <p className={styles.emptyState}>Nenhuma receita combina com a busca.</p>
         )}
         {!loading &&
-          orderedRecipes.map((recipe) => (
-            <article key={recipe.id} className={styles.card}>
-              <div onClick={() => handleSelectRecipe(recipe)} style={{ flex: 1 }}>
-                <div className={styles.cardTitle}>{recipe.name}</div>
-                <small style={{ color: "#6b6b6b" }}>
-                  {(recipe.ingredients?.length ?? 0)} ingrediente(s)
-                </small>
-              </div>
-              <button
-                aria-label="Marcar favorito"
-                className={`${styles.starButton} ${recipe.favorite ? styles.favorite : ""}`}
-                onClick={() => void handleFavoriteToggle(recipe)}
-              >
+          orderedRecipes.map((recipe) => {
+            const ingredientCount = recipe.ingredients?.length ?? 0;
+            return (
+              <article key={recipe.id} className={styles.card}>
+                <div onClick={() => handleSelectRecipe(recipe)} style={{ flex: 1 }}>
+                  <div className={styles.cardTitle}>{recipe.name}</div>
+                  <small className={styles.cardMeta}>
+                    {ingredientCount} {ingredientCount === 1 ? "ingrediente" : "ingredientes"}
+                  </small>
+                </div>
+                <button
+                  aria-label="Marcar favorito"
+                  className={`${styles.starButton} ${recipe.favorite ? styles.favorite : ""}`}
+                  onClick={() => void handleFavoriteToggle(recipe)}
+                >
                 <Star
                   size={18}
                   aria-hidden="true"
@@ -719,15 +725,16 @@ export default function Home() {
               <button className={styles.starButton} onClick={() => openEdit(recipe)} aria-label="Editar">
                 <Pencil size={16} aria-hidden="true" />
               </button>
-              <button
-                className={`${styles.starButton} ${styles.deleteButton}`}
-                aria-label="Excluir"
-                onClick={() => void handleDeleteRecipe(recipe)}
-              >
-                <Trash2 size={18} aria-hidden="true" />
-              </button>
-            </article>
-          ))}
+                <button
+                  className={`${styles.starButton} ${styles.deleteButton}`}
+                  aria-label="Excluir"
+                  onClick={() => void handleDeleteRecipe(recipe)}
+                >
+                  <Trash2 size={18} aria-hidden="true" />
+                </button>
+              </article>
+            );
+          })}
       </section>
 
       {selectedRecipe && (
@@ -736,16 +743,8 @@ export default function Home() {
             <div className={styles.panelHeader}>
               <h2 className={styles.panelTitle}>{selectedRecipe.name}</h2>
               <div className={styles.panelActions}>
-                <button
-                  className={styles.dangerButton}
-                  onClick={() => void handleDeleteRecipe(selectedRecipe)}
-                >
-                  <Trash2 size={16} aria-hidden="true" />
-                  <span>Excluir</span>
-                </button>
-                <button className={styles.closeButton} onClick={() => setSelectedId(null)}>
+                <button className={styles.closeButton} onClick={() => setSelectedId(null)} aria-label="Fechar painel">
                   <X size={16} aria-hidden="true" />
-                  <span>Fechar</span>
                 </button>
               </div>
             </div>

@@ -10,10 +10,10 @@ const plex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Lanchinhos",
+  title: "Cozya",
   description: "PWA minimalista para lembrar receitas rápidas",
   manifest: "/manifest.json",
-  applicationName: "Lanchinhos"
+  applicationName: "Cozya"
 };
 
 export const viewport = {

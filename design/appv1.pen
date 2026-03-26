@@ -109,7 +109,7 @@
                       "type": "text",
                       "id": "NELYp",
                       "fill": "#2C2C2C",
-                      "content": "Lanche de Pai",
+                      "content": "Cozya",
                       "fontFamily": "IBM Plex Sans",
                       "fontSize": 36,
                       "fontWeight": "600",
@@ -123,7 +123,8 @@
                       "width": "fill_container",
                       "content": "Receitas rápidas sempre visíveis.",
                       "fontFamily": "IBM Plex Sans",
-                      "fontSize": 16
+                      "fontSize": 16,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -155,7 +156,8 @@
                   "width": 133,
                   "content": "O que vamos fazer?",
                   "fontFamily": "IBM Plex Sans",
-                  "fontSize": 15
+                  "fontSize": 15,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -284,7 +286,7 @@
                                   "y": 0,
                                   "fill": "#2C2C2C",
                                   "textGrowth": "fixed-width",
-                                  "width": 160.6255144032922,
+                                  "width": 168552.62551440357,
                                   "content": "Tapioca rápida",
                                   "fontFamily": "IBM Plex Sans",
                                   "fontSize": 18,
@@ -297,7 +299,7 @@
                                   "x": 0,
                                   "y": 27,
                                   "name": "metaA",
-                                  "width": 116.08230452674897,
+                                  "width": 121811.14112805562,
                                   "gap": 8,
                                   "children": [
                                     {
@@ -437,11 +439,11 @@
                                 {
                                   "type": "text",
                                   "id": "bKfxm",
-                                  "x": 0,
-                                  "y": 0,
+                                  "x": null,
+                                  "y": null,
                                   "fill": "#2C2C2C",
                                   "textGrowth": "fixed-width",
-                                  "width": 160.6255144032922,
+                                  "width": null,
                                   "content": "Tapioca rápida",
                                   "fontFamily": "IBM Plex Sans",
                                   "fontSize": 18,
@@ -451,10 +453,10 @@
                                 {
                                   "type": "frame",
                                   "id": "MhJCb",
-                                  "x": 0,
-                                  "y": 27,
+                                  "x": null,
+                                  "y": null,
                                   "name": "metaA",
-                                  "width": 116.08230452674897,
+                                  "width": null,
                                   "gap": 8,
                                   "children": [
                                     {
@@ -474,7 +476,7 @@
                               "type": "frame",
                               "id": "Dlwcl",
                               "name": "actionsA",
-                              "width": 122,
+                              "width": null,
                               "gap": 8,
                               "alignItems": "center",
                               "children": [
@@ -947,7 +949,7 @@
                   "type": "frame",
                   "id": "24MgN",
                   "name": "wa",
-                  "width": 36,
+                  "width": 72,
                   "height": 36,
                   "fill": "#E6F5EE",
                   "cornerRadius": 999,
@@ -970,7 +972,7 @@
                   "type": "frame",
                   "id": "SWB7E",
                   "name": "ig",
-                  "width": 36,
+                  "width": 72,
                   "height": 36,
                   "fill": "#FDEFF6",
                   "cornerRadius": 999,
@@ -1892,15 +1894,15 @@
           "children": [
             {
               "type": "rectangle",
-              "id": "vwhJ6",
+              "id": "lTcul",
               "fill": {
                 "type": "image",
                 "enabled": true,
-                "url": "./images/generated-1774198339065.png",
+                "url": "logo.png",
                 "mode": "fill"
               },
-              "width": 402,
-              "height": 229
+              "width": 403,
+              "height": 197
             },
             {
               "type": "text",
@@ -2149,6 +2151,112 @@
               "height": 5
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "PDyhX",
+      "x": 2200,
+      "y": 1400,
+      "name": "Cozya Icon Export",
+      "width": 240,
+      "height": 240,
+      "layout": "none",
+      "children": [
+        {
+          "type": "rectangle",
+          "cornerRadius": 120,
+          "id": "JiKc4",
+          "x": 20,
+          "y": 20,
+          "name": "base",
+          "fill": {
+            "type": "gradient",
+            "gradientType": "linear",
+            "enabled": true,
+            "rotation": 140,
+            "size": {
+              "height": 1
+            },
+            "colors": [
+              {
+                "color": "#D49373",
+                "position": 0
+              },
+              {
+                "color": "#F3CBAF",
+                "position": 1
+              }
+            ]
+          },
+          "width": 200,
+          "height": 200
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 24,
+          "id": "ekl98",
+          "x": 50,
+          "y": 92,
+          "name": "lip",
+          "fill": "#FDF6ED",
+          "width": 140,
+          "height": 36,
+          "stroke": {
+            "thickness": 2,
+            "fill": "#FFFFFF"
+          }
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 44,
+          "id": "TjdqG",
+          "x": 58,
+          "y": 110,
+          "name": "bowl",
+          "fill": "#FFFFFF",
+          "width": 124,
+          "height": 80,
+          "stroke": {
+            "thickness": 2,
+            "fill": "#F5F4F1"
+          }
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 32,
+          "id": "bhsoz",
+          "x": 142,
+          "y": 112,
+          "name": "handle",
+          "fill": "#F7D1BD",
+          "width": 50,
+          "height": 62
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 10,
+          "id": "IeAdh",
+          "x": 88,
+          "y": 56,
+          "name": "steam1",
+          "opacity": 0.7,
+          "fill": "#FFFFFF",
+          "width": 14,
+          "height": 54
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 10,
+          "id": "827UR",
+          "x": 120,
+          "y": 44,
+          "name": "steam2",
+          "opacity": 0.6,
+          "fill": "#FFFFFF",
+          "width": 14,
+          "height": 46
         }
       ]
     }

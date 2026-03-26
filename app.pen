@@ -106,14 +106,17 @@
                   ],
                   "children": [
                     {
-                      "type": "text",
-                      "id": "NELYp",
-                      "fill": "#2C2C2C",
-                      "content": "Lanche de Pai",
-                      "fontFamily": "IBM Plex Sans",
-                      "fontSize": 36,
-                      "fontWeight": "600",
-                      "letterSpacing": -0.5
+                      "type": "rectangle",
+                      "id": "ypmcY",
+                      "name": "logo",
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "logo-1.png",
+                        "mode": "fill"
+                      },
+                      "width": 321,
+                      "height": 147
                     },
                     {
                       "type": "text",
@@ -122,6 +125,7 @@
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
                       "content": "Receitas rápidas sempre visíveis.",
+                      "textAlign": "center",
                       "fontFamily": "IBM Plex Sans",
                       "fontSize": 16,
                       "fontWeight": "normal"
@@ -295,7 +299,7 @@
                           "type": "frame",
                           "id": "x6Atm",
                           "name": "leftA",
-                          "width": 146,
+                          "width": 319,
                           "height": 45,
                           "layout": "vertical",
                           "gap": 4,
@@ -319,7 +323,7 @@
                                       "y": 0,
                                       "fill": "#2C2C2C",
                                       "textGrowth": "fixed-width",
-                                      "width": 150.6788119416982,
+                                      "width": 1.0192029734487691e+82,
                                       "content": "Tapioca rápida",
                                       "fontFamily": "IBM Plex Sans",
                                       "fontSize": 18,
@@ -332,7 +336,7 @@
                                       "x": 0,
                                       "y": 27.999999999999996,
                                       "name": "metaA",
-                                      "width": 108.89393131921032,
+                                      "width": 7.36566854761294e+81,
                                       "gap": 8,
                                       "children": [
                                         {
@@ -352,7 +356,7 @@
                                   "type": "frame",
                                   "id": "x1iHP",
                                   "name": "actionsA",
-                                  "width": 123,
+                                  "width": 8.319813789260876e+81,
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
@@ -485,7 +489,7 @@
                                       "y": 0,
                                       "fill": "#2C2C2C",
                                       "textGrowth": "fixed-width",
-                                      "width": 150.6788119416982,
+                                      "width": 1.0192029734487691e+82,
                                       "content": "Tapioca rápida",
                                       "fontFamily": "IBM Plex Sans",
                                       "fontSize": 18,
@@ -498,7 +502,7 @@
                                       "x": 0,
                                       "y": 27.999999999999996,
                                       "name": "metaA",
-                                      "width": 108.89393131921032,
+                                      "width": 7.36566854761294e+81,
                                       "gap": 8,
                                       "children": [
                                         {
@@ -518,7 +522,7 @@
                                   "type": "frame",
                                   "id": "BDFSu",
                                   "name": "actionsA",
-                                  "width": 123,
+                                  "width": 8.319813789260876e+81,
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
@@ -996,7 +1000,7 @@
                   "type": "frame",
                   "id": "24MgN",
                   "name": "wa",
-                  "width": 36.441079706206004,
+                  "width": 81.88215941241202,
                   "height": 36,
                   "fill": "#E6F5EE",
                   "cornerRadius": 999,
@@ -1019,7 +1023,7 @@
                   "type": "frame",
                   "id": "SWB7E",
                   "name": "ig",
-                  "width": 36.441079706206004,
+                  "width": 81.88215941241202,
                   "height": 36,
                   "fill": "#FDEFF6",
                   "cornerRadius": 999,
@@ -1941,15 +1945,15 @@
           "children": [
             {
               "type": "rectangle",
-              "id": "vwhJ6",
+              "id": "YnUUo",
               "fill": {
                 "type": "image",
                 "enabled": true,
-                "url": "./images/generated-1774198339065.png",
-                "mode": "fit"
+                "url": "logo-1.png",
+                "mode": "fill"
               },
-              "width": 402,
-              "height": 264
+              "width": 400,
+              "height": 267
             },
             {
               "type": "text",

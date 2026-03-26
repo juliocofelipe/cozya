@@ -22,13 +22,13 @@
 }
 
 .heroImage {
-  border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #fde8cf, #f9d4bf);
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
   margin-top: 8px;
   margin-bottom: 8px;
-  border: 1px solid #f0ece6;
-  box-shadow: 0 24px 60px rgba(198, 122, 82, 0.12);
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
