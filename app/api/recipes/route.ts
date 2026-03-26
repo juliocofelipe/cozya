@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  RecipeValidationError,
-  createRecipeRecord,
-  listRecipes,
-  normalizeIncomingPayload
-} from "@/lib/recipes";
+import { createRecipeRecord, listRecipes } from "@/server/recipes/repository";
+import { RecipeValidationError, normalizeIncomingPayload } from "@/server/recipes/validation";
 
 const errorResponse = (error: unknown) => {
   if (error instanceof RecipeValidationError) {

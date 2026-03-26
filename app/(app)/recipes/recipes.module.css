@@ -20,8 +20,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
 }
 
 .logoWrapper {
@@ -38,6 +38,7 @@
   color: #6b6b6b;
   font-size: 1rem;
   margin: 0;
+  text-align: center;
 }
 
 .searchCard {
@@ -242,6 +243,19 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.shareIconButton {
+  border: none;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .dangerButton {

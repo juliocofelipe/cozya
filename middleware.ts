@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { SESSION_COOKIE_NAME, destroySessionCookie, verifySessionToken } from "@/lib/session";
+import { SESSION_COOKIE_NAME, destroySessionCookie, verifySessionToken } from "@/server/auth/session";
 
 const PUBLIC_PATHS = ["/login", "/manifest.json", "/favicon.ico"];
 

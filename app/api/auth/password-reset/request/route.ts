@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createPasswordResetToken } from "@/lib/auth";
+import { createPasswordResetToken } from "@/server/auth/service";
 
 const respond = (message: string, token?: string, expiresAt?: number) =>
   NextResponse.json(

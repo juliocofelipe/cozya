@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { SESSION_COOKIE_NAME, destroySessionCookie, verifySessionToken } from "@/lib/session";
+import { SESSION_COOKIE_NAME, destroySessionCookie, verifySessionToken } from "@/server/auth/session";
 
 const notAuthenticated = () => {
   const response = NextResponse.json({ error: "Não autenticado" }, { status: 401 });

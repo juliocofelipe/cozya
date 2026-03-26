@@ -2,6 +2,24 @@
 
 Aplicação Next.js para organizar receitas rápidas com suporte offline e agora persistência em PostgreSQL (Neon).
 
+## Estrutura do projeto
+
+```
+app/
+├── (auth)/login/…           # Fluxo público de autenticação
+└── (app)/recipes/…          # Shell autenticado + componentes colocalizados
+
+server/
+├── auth/{service,session}.ts # Serviços de usuários, sessão JWT
+├── db/client.ts              # Cliente PostgreSQL (Neon)
+├── importer/parser.ts        # Parser/OCR fallback de receitas
+└── recipes/{repository,validation}.ts
+```
+
+- Tudo que muda junto com uma rota fica ao lado dela em `app/(app)/recipes`. Componentes (`components/*`), tipos e hooks dessa tela vivem no mesmo diretório, seguindo a regra de colocation da App Router.
+- Qualquer lógica de domínio (DB, autenticação, importador) mora em `server/…` e é consumida pelas rotas de API e middleware. Isso evita um `lib/` genérico e deixa mais claro onde adicionar novas features.
+- Para criar novas páginas públicas use um route group (`app/(auth)/…`), e para telas autenticadas reutilize `app/(app)` mantendo layouts separados sem alterar as URLs.
+
 ## Pré-requisitos
 
 - Node.js 18+

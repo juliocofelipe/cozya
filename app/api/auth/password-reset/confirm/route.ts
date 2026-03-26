@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { resetPasswordWithToken } from "@/lib/auth";
-import { createSessionCookie, createSessionToken, destroySessionCookie } from "@/lib/session";
+import { resetPasswordWithToken } from "@/server/auth/service";
+import { createSessionCookie, createSessionToken, destroySessionCookie } from "@/server/auth/session";
 
 const respondWithError = (message: string, status: number) => {
   const response = NextResponse.json({ error: message }, { status });

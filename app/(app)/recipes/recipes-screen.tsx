@@ -1,24 +1,31 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Camera, Check, ImageDown, LogOut, Mic, Pencil, Star, Trash2, UploadCloud, Wand2, X } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type ClipboardEvent,
+  type DragEvent
+} from "react";
 
-import type { ParsedRecipe } from "@/lib/recipe-import";
+import type { ParsedRecipe } from "@/server/importer/parser";
 import type { Recipe, RecipePayload } from "@/types/recipe";
-import styles from "./page.module.css";
 
-import type { ChangeEvent, ClipboardEvent, DragEvent } from "react";
-
-type RecipeFormState = {
-  id?: string;
-  name: string;
-  ingredientsText: string;
-  preparo: string;
-  finalizacao: string;
-  favorite: boolean;
-};
+import HeroSection from "./components/hero-section";
+import ImportModal from "./components/import-modal";
+import PrimaryActions from "./components/primary-actions";
+import RecipeFormModal from "./components/recipe-form-modal";
+import RecipeList from "./components/recipe-list";
+import RecipePanel from "./components/recipe-panel";
+import SearchBar from "./components/search-bar";
+import TopActions from "./components/top-actions";
+import VoiceFeedback from "./components/voice-feedback";
+import styles from "./recipes.module.css";
+import { emptyFormState, toFormState, type RecipeFormState } from "./types";
 
 type VoiceRecognitionResultEvent = {
   results: ArrayLike<{
@@ -41,26 +48,6 @@ type VoiceRecognition = {
 };
 
 type VoiceRecognitionConstructor = new () => VoiceRecognition;
-
-const emptyFormState = (): RecipeFormState => ({
-  name: "",
-  ingredientsText: "",
-  preparo: "",
-  finalizacao: "",
-  favorite: false
-});
-
-const toFormState = (recipe?: Recipe): RecipeFormState =>
-  recipe
-    ? {
-        id: recipe.id,
-        name: recipe.name,
-        ingredientsText: (Array.isArray(recipe.ingredients) ? recipe.ingredients : []).join("\n"),
-        preparo: recipe.preparo,
-        finalizacao: recipe.finalizacao,
-        favorite: Boolean(recipe.favorite)
-      }
-    : emptyFormState();
 
 const normalizeLines = (text: string) =>
   text
@@ -107,13 +94,10 @@ const jsonRequest = async <T,>(url: string, init?: RequestInit): Promise<T> => {
 
 const upsertRecipe = (items: Recipe[], updated: Recipe): Recipe[] => {
   const exists = items.some((item) => item.id === updated.id);
-  return exists
-    ? items.map((item) => (item.id === updated.id ? updated : item))
-    : [...items, updated];
+  return exists ? items.map((item) => (item.id === updated.id ? updated : item)) : [...items, updated];
 };
 
-
-export default function Home() {
+export default function RecipesScreen() {
   const router = useRouter();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [query, setQuery] = useState("");
@@ -377,8 +361,8 @@ export default function Home() {
   const handleLogout = useCallback(async () => {
     try {
       await fetch("/api/auth/session", { method: "DELETE" });
-    } catch (error) {
-      console.error("logout", error);
+    } catch (logoutError) {
+      console.error("logout", logoutError);
     } finally {
       router.push("/login");
     }
@@ -432,10 +416,12 @@ export default function Home() {
     };
   }, [cameraOpen]);
 
-  useEffect(() => () => {
-    stopCameraStream();
-  }, [stopCameraStream]);
-
+  useEffect(
+    () => () => {
+      stopCameraStream();
+    },
+    [stopCameraStream]
+  );
 
   const orderedRecipes = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -449,9 +435,7 @@ export default function Home() {
       });
   }, [recipes, query]);
 
-  const selectedRecipe = selectedId
-    ? recipes.find((recipe) => recipe.id === selectedId) ?? null
-    : null;
+  const selectedRecipe = selectedId ? recipes.find((recipe) => recipe.id === selectedId) ?? null : null;
 
   const handleSelectRecipe = (recipe: Recipe) => {
     setSelectedId(recipe.id);
@@ -534,9 +518,7 @@ export default function Home() {
 
   const handleDeleteRecipe = async (recipe: Recipe) => {
     const confirmDelete =
-      typeof window === "undefined"
-        ? true
-        : window.confirm(`Remover "${recipe.name}" da lista?`);
+      typeof window === "undefined" ? true : window.confirm(`Remover "${recipe.name}" da lista?`);
     if (!confirmDelete) return;
 
     try {
@@ -563,13 +545,10 @@ export default function Home() {
     const isEditing = Boolean(formState.id);
 
     try {
-      const recipe = await jsonRequest<Recipe>(
-        isEditing ? `/api/recipes/${formState.id}` : "/api/recipes",
-        {
-          method: isEditing ? "PATCH" : "POST",
-          body: JSON.stringify(payload)
-        }
-      );
+      const recipe = await jsonRequest<Recipe>(isEditing ? `/api/recipes/${formState.id}` : "/api/recipes", {
+        method: isEditing ? "PATCH" : "POST",
+        body: JSON.stringify(payload)
+      });
       setRecipes((prev) => upsertRecipe(prev, recipe));
       closeForm();
     } catch (err) {
@@ -620,8 +599,8 @@ export default function Home() {
     try {
       speechRecognitionRef.current.start();
       setSpeechActive(true);
-    } catch (error) {
-      console.error("speech start", error);
+    } catch (speechProblem) {
+      console.error("speech start", speechProblem);
       setSpeechError("Não foi possível iniciar o microfone.");
     }
   };
@@ -630,27 +609,16 @@ export default function Home() {
     if (!speechRecognitionRef.current) return;
     try {
       speechRecognitionRef.current.stop();
-    } catch (error) {
-      console.error("speech stop", error);
+    } catch (speechProblem) {
+      console.error("speech stop", speechProblem);
     }
   };
 
   return (
     <main className={styles.container}>
-      <div className={styles.topActions}>
-        <button className={styles.logoutIconButton} onClick={() => void handleLogout()} aria-label="Sair">
-          <LogOut size={18} aria-hidden="true" />
-        </button>
-      </div>
+      <TopActions onLogout={handleLogout} />
       <h1 className="sr-only">Cozya</h1>
-      <section className={styles.hero}>
-        <div className={styles.brand}>
-          <div className={styles.logoWrapper}>
-            <Image src="/images/cozya-logo.png" fill sizes="220px" alt="Logo do Cozya" priority />
-          </div>
-          <p className={styles.tagline}>Receitas rápidas sempre visíveis.</p>
-        </div>
-      </section>
+      <HeroSection />
 
       {error && (
         <p className={styles.error} role="alert">
@@ -658,24 +626,13 @@ export default function Home() {
         </p>
       )}
 
-      <div className={styles.searchCard}>
-        <input
-          aria-label="Buscar receitas"
-          className={styles.searchInput}
-          placeholder="O que vamos fazer?"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          autoComplete="off"
-        />
-        <button
-          type="button"
-          className={styles.searchIconButton}
-          aria-label={speechActive ? "Parar ditado" : "Buscar com voz"}
-          onClick={() => (speechActive ? handleStopListening() : handleStartListening())}
-        >
-          <Mic size={16} aria-hidden="true" />
-        </button>
-      </div>
+      <SearchBar
+        query={query}
+        onQueryChange={setQuery}
+        speechActive={speechActive}
+        onSpeechStart={handleStartListening}
+        onSpeechStop={handleStopListening}
+      />
 
       {!speechSupported && (
         <p className={styles.importHint} style={{ marginTop: 4 }}>
@@ -683,296 +640,69 @@ export default function Home() {
         </p>
       )}
 
-      <div className={styles.actions}>
-        <button className={styles.ghostButton} onClick={openImport}>
-          <UploadCloud size={18} aria-hidden="true" />
-          <span>Importar receita</span>
-        </button>
-        <button className={styles.accentButton} onClick={openCreate}>
-          <span>+ Nova Receita</span>
-        </button>
-      </div>
+      <PrimaryActions onImport={openImport} onCreate={openCreate} />
 
       <p className={styles.sectionLabel}>Receitas salvas</p>
-      <section className={styles.list}>
-        {loading && <p className={styles.emptyState}>Carregando receitas...</p>}
-        {!loading && orderedRecipes.length === 0 && (
-          <p className={styles.emptyState}>Nenhuma receita combina com a busca.</p>
-        )}
-        {!loading &&
-          orderedRecipes.map((recipe) => {
-            const ingredientCount = recipe.ingredients?.length ?? 0;
-            return (
-              <article key={recipe.id} className={styles.card}>
-                <div onClick={() => handleSelectRecipe(recipe)} style={{ flex: 1 }}>
-                  <div className={styles.cardTitle}>{recipe.name}</div>
-                  <small className={styles.cardMeta}>
-                    {ingredientCount} {ingredientCount === 1 ? "ingrediente" : "ingredientes"}
-                  </small>
-                </div>
-                <button
-                  aria-label="Marcar favorito"
-                  className={`${styles.starButton} ${recipe.favorite ? styles.favorite : ""}`}
-                  onClick={() => void handleFavoriteToggle(recipe)}
-                >
-                <Star
-                  size={18}
-                  aria-hidden="true"
-                  fill={recipe.favorite ? "currentColor" : "none"}
-                  stroke="currentColor"
-                />
-              </button>
-              <button className={styles.starButton} onClick={() => openEdit(recipe)} aria-label="Editar">
-                <Pencil size={16} aria-hidden="true" />
-              </button>
-                <button
-                  className={`${styles.starButton} ${styles.deleteButton}`}
-                  aria-label="Excluir"
-                  onClick={() => void handleDeleteRecipe(recipe)}
-                >
-                  <Trash2 size={18} aria-hidden="true" />
-                </button>
-              </article>
-            );
-          })}
-      </section>
 
-      {selectedRecipe && (
-        <div className={styles.recipePanel} role="dialog" aria-modal="true">
-          <div className={styles.panelContent}>
-            <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>{selectedRecipe.name}</h2>
-              <div className={styles.panelActions}>
-                <button className={styles.closeButton} onClick={() => setSelectedId(null)} aria-label="Fechar painel">
-                  <X size={16} aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-            <div>
-              <div className={styles.sectionTitle}>INGREDIENTES</div>
-              <ul style={{ paddingLeft: "1.2rem", marginTop: 8 }}>
-                {(Array.isArray(selectedRecipe.ingredients) ? selectedRecipe.ingredients : []).map((item) => (
-                  <li key={item} className={styles.paragraph}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <div className={styles.sectionTitle}>PREPARO</div>
-              <p className={styles.paragraph}>{selectedRecipe.preparo}</p>
-            </div>
-            <div>
-              <div className={styles.sectionTitle}>FINALIZAÇÃO</div>
-              <p className={styles.paragraph}>{selectedRecipe.finalizacao}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      <RecipeList
+        recipes={orderedRecipes}
+        loading={loading}
+        emptyMessage="Nenhuma receita combina com a busca."
+        onSelect={handleSelectRecipe}
+        onToggleFavorite={(recipe) => void handleFavoriteToggle(recipe)}
+        onEdit={openEdit}
+        onDelete={(recipe) => void handleDeleteRecipe(recipe)}
+      />
 
-      {formOpen && (
-        <div className={styles.modalOverlay} role="dialog" aria-modal="true">
-          <div className={styles.modal}>
-            <h2 className={styles.modalTitle}>{formState.id ? "Editar receita" : "Nova receita"}</h2>
+      {selectedRecipe && <RecipePanel recipe={selectedRecipe} onClose={() => setSelectedId(null)} />}
 
-            <label className={styles.fieldGroup}>
-              <span className={styles.label}>Nome</span>
-              <input
-                className={styles.input}
-                value={formState.name}
-                onChange={(event) => setFormState((prev) => ({ ...prev, name: event.target.value }))}
-              />
-            </label>
+      <RecipeFormModal
+        open={formOpen}
+        formState={formState}
+        setFormState={setFormState}
+        saving={saving}
+        onClose={closeForm}
+        onSave={() => void handleSaveRecipe()}
+      />
 
-            <label className={styles.fieldGroup}>
-              <span className={styles.label}>Ingredientes (um por linha)</span>
-              <textarea
-                className={`${styles.textarea}`}
-                value={formState.ingredientsText}
-                onChange={(event) =>
-                  setFormState((prev) => ({ ...prev, ingredientsText: event.target.value }))
-                }
-              />
-            </label>
+      <ImportModal
+        open={importOpen}
+        importText={importText}
+        importError={importError}
+        importInfo={importInfo}
+        importTransforming={importTransforming}
+        importImagePreview={importImagePreview}
+        importImageFileName={importImageFile?.name ?? null}
+        ocrLoading={ocrLoading}
+        ocrProgress={ocrProgress}
+        ocrError={ocrError}
+        cameraOpen={cameraOpen}
+        cameraError={cameraError}
+        cameraLoading={cameraLoading}
+        onClose={closeImport}
+        onTextChange={(value) => {
+          setImportText(value);
+          setImportError(null);
+          setImportInfo(null);
+        }}
+        onApply={() => void handleImportApply()}
+        onFileChange={handleFileInputChange}
+        onImportDragOver={handleImportDragOver}
+        onImportDrop={handleImportDrop}
+        onImportPaste={handleImportPaste}
+        onClearImage={handleClearImportImage}
+        onOpenCamera={() => void openCameraCapture()}
+        onCloseCamera={closeCameraCapture}
+        onCaptureFromCamera={() => void handleCameraCapture()}
+        importFileInputRef={importFileInputRef}
+        cameraVideoRef={cameraVideoRef}
+      />
 
-            <label className={styles.fieldGroup}>
-              <span className={styles.label}>Preparo</span>
-              <textarea
-                className={`${styles.textarea}`}
-                value={formState.preparo}
-                onChange={(event) => setFormState((prev) => ({ ...prev, preparo: event.target.value }))}
-              />
-            </label>
-
-            <label className={styles.fieldGroup}>
-              <span className={styles.label}>Finalização</span>
-              <input
-                className={styles.input}
-                value={formState.finalizacao}
-                onChange={(event) =>
-                  setFormState((prev) => ({ ...prev, finalizacao: event.target.value }))
-                }
-              />
-            </label>
-
-            <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <input
-                type="checkbox"
-                checked={formState.favorite}
-                onChange={(event) =>
-                  setFormState((prev) => ({ ...prev, favorite: event.target.checked }))
-                }
-              />
-              <span className={styles.label}>Favorito</span>
-            </label>
-
-            <div className={styles.buttonsRow}>
-              <button className={styles.secondaryBtn} onClick={closeForm}>
-                <X size={16} aria-hidden="true" />
-                <span>Cancelar</span>
-              </button>
-              <button
-                className={styles.primaryBtn}
-                onClick={handleSaveRecipe}
-                disabled={saving}
-              >
-                <Check size={16} aria-hidden="true" />
-                <span>{saving ? "Salvando..." : "Salvar"}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {importOpen && (
-        <div className={styles.modalOverlay} role="dialog" aria-modal="true">
-          <div className={styles.modal}>
-            <div className={styles.modalTopBar}>
-              <h2 className={styles.modalTitle}>Importar receita</h2>
-              <button
-                type="button"
-                className={styles.modalCloseIcon}
-                onClick={closeImport}
-                aria-label="Fechar importação"
-              >
-                <X size={16} aria-hidden="true" />
-              </button>
-            </div>
-            <label className={styles.fieldGroup}>
-              <span className={styles.label}>Cole aqui o texto bruto</span>
-              <textarea
-                className={`${styles.textarea} ${styles.importArea}`}
-                value={importText}
-                onChange={(event) => {
-                  setImportText(event.target.value);
-                  setImportError(null);
-                  setImportInfo(null);
-                }}
-                onPaste={handleImportPaste}
-              />
-            </label>
-            <div className={styles.importHelper}>
-              <p className={styles.importHint}>
-                Prefere usar uma imagem? Arraste/solte, clique abaixo, abra a câmera ou simplesmente cole a foto da
-                receita para extrairmos o texto automaticamente.
-              </p>
-              <label
-                className={styles.dropzone}
-                onDragOver={handleImportDragOver}
-                onDrop={handleImportDrop}
-              >
-                <input
-                  ref={importFileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className={styles.hiddenInput}
-                  onChange={handleFileInputChange}
-                />
-                <span className={styles.dropzoneIcon}>
-                  <ImageDown size={20} aria-hidden="true" />
-                </span>
-                <span className={styles.dropzoneTitle}>Clique aqui ou solte uma imagem</span>
-                <span className={styles.dropzoneHint}>Formatos compatíveis: JPG, PNG, HEIC</span>
-              </label>
-              <button
-                type="button"
-                className={styles.cameraButton}
-                onClick={() => void openCameraCapture()}
-                disabled={cameraLoading || cameraOpen}
-              >
-                <Camera size={16} aria-hidden="true" />
-                <span>{cameraLoading ? "Abrindo câmera..." : cameraOpen ? "Câmera ativa" : "Importar com a câmera"}</span>
-              </button>
-              {cameraError && <p className={styles.error}>{cameraError}</p>}
-              {cameraOpen && (
-                <div className={styles.cameraPreview}>
-                  <video ref={cameraVideoRef} playsInline autoPlay muted />
-                  <div className={styles.cameraActions}>
-                    <button type="button" className={styles.secondaryBtn} onClick={closeCameraCapture}>
-                      <X size={16} aria-hidden="true" />
-                      <span>Cancelar câmera</span>
-                    </button>
-                    <button type="button" className={styles.primaryBtn} onClick={() => void handleCameraCapture()}>
-                      <Camera size={16} aria-hidden="true" />
-                      <span>Capturar</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-              {importImagePreview && (
-                <div className={styles.imagePreview}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={importImagePreview} alt="Prévia da imagem importada" />
-                  <div className={styles.previewActions}>
-                    <span className={styles.previewLabel}>{importImageFile?.name ?? "Imagem colada"}</span>
-                    <button type="button" className={styles.secondaryBtn} onClick={handleClearImportImage}>
-                      <Trash2 size={16} aria-hidden="true" />
-                      <span>Remover imagem</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-              {ocrLoading && (
-                <div className={styles.progressWrapper}>
-                  <div className={styles.progressBar}>
-                    <div style={{ width: `${Math.round(ocrProgress * 100)}%` }} />
-                  </div>
-                  <small className={styles.progressText}>
-                    Extraindo texto... {Math.round(ocrProgress * 100)}%
-                  </small>
-                </div>
-              )}
-              {ocrError && <p className={styles.error}>{ocrError}</p>}
-              {importInfo && <p className={styles.success}>{importInfo}</p>}
-            </div>
-            {importError && <p className={styles.error}>{importError}</p>}
-            <div className={styles.buttonsRow}>
-              <button
-                className={styles.primaryBtn}
-                onClick={() => void handleImportApply()}
-                disabled={importTransforming}
-              >
-                <Wand2 size={16} aria-hidden="true" />
-                <span>{importTransforming ? "Transformando..." : "Transformar"}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {(speechError || speechTranscript) && (
-        <div className={styles.voiceFeedback}>
-          {speechError && <p className={styles.error}>{speechError}</p>}
-          {speechTranscript && (
-            <p className={styles.success}>
-              Capturamos: <strong>{speechTranscript}</strong>
-            </p>
-          )}
-          {speechTranscript && (
-            <button type="button" className={styles.voiceClear} onClick={() => setSpeechTranscript("")}>Limpar voz</button>
-          )}
-        </div>
-      )}
+      <VoiceFeedback
+        error={speechError}
+        transcript={speechTranscript}
+        onClearTranscript={() => setSpeechTranscript("")}
+      />
     </main>
   );
 }

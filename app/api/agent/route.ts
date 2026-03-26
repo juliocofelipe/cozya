@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  RecipeValidationError,
-  createRecipeRecord,
-  normalizeIncomingPayload
-} from "@/lib/recipes";
+import { createRecipeRecord } from "@/server/recipes/repository";
+import { RecipeValidationError, normalizeIncomingPayload } from "@/server/recipes/validation";
 
 type AgentRecipePayload = {
   id?: string;

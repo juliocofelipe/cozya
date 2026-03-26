@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { sql } from "@/lib/db";
+import { sql } from "@/server/db/client";
 
 type AuthUserRow = {
   id: string;

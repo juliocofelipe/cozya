@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  RecipeValidationError,
-  deleteRecipeRecord,
-  normalizeIncomingPayload,
-  touchRecipeRecord,
-  updateRecipeRecord
-} from "@/lib/recipes";
+import { deleteRecipeRecord, touchRecipeRecord, updateRecipeRecord } from "@/server/recipes/repository";
+import { RecipeValidationError, normalizeIncomingPayload } from "@/server/recipes/validation";
 
 type RouteContext = { params: { id: string } };
 

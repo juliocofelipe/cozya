@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { createAuthUser } from "@/lib/auth";
-import { createSessionCookie, createSessionToken, destroySessionCookie } from "@/lib/session";
+import { createAuthUser } from "@/server/auth/service";
+import { createSessionCookie, createSessionToken, destroySessionCookie } from "@/server/auth/session";
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 

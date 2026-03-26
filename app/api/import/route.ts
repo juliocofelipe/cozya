@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { RecipeImportError, parseRecipeText } from "@/lib/recipe-import";
-import type { ParsedRecipe } from "@/lib/recipe-import";
+import { RecipeImportError, parseRecipeText } from "@/server/importer/parser";
+import type { ParsedRecipe } from "@/server/importer/parser";
 
 type ImportPayload = {
   text?: string;
