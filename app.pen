@@ -88,6 +88,50 @@
           ],
           "children": [
             {
+              "type": "frame",
+              "id": "mhlYt",
+              "name": "topActions",
+              "width": "fill_container",
+              "justifyContent": "end",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "FUJUI",
+                  "name": "logout",
+                  "width": 42,
+                  "height": 42,
+                  "fill": "#FFF2EA",
+                  "cornerRadius": 999,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#C67A5233",
+                    "offset": {
+                      "x": 0,
+                      "y": 6
+                    },
+                    "blur": 16
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "htNw6",
+                      "name": "icon",
+                      "fill": "#C67A52",
+                      "content": "⎋",
+                      "fontFamily": "IBM Plex Sans",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "type": "group",
               "id": "DRnif",
               "layout": "horizontal",
@@ -99,23 +143,20 @@
                   "name": "hero",
                   "width": 353,
                   "layout": "vertical",
-                  "gap": 6,
-                  "padding": [
-                    0,
-                    15
-                  ],
+                  "gap": 12,
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
-                      "id": "ypmcY",
+                      "id": "vDwEh",
                       "name": "logo",
                       "fill": {
                         "type": "image",
                         "enabled": true,
                         "url": "logo-1.png",
-                        "mode": "fill"
+                        "mode": "fit"
                       },
-                      "width": 321,
+                      "width": 220,
                       "height": 147
                     },
                     {
@@ -123,7 +164,7 @@
                       "id": "TAxth",
                       "fill": "#6B6B6B",
                       "textGrowth": "fixed-width",
-                      "width": "fill_container",
+                      "width": 320,
                       "content": "Receitas rápidas sempre visíveis.",
                       "textAlign": "center",
                       "fontFamily": "IBM Plex Sans",
@@ -299,7 +340,7 @@
                           "type": "frame",
                           "id": "x6Atm",
                           "name": "leftA",
-                          "width": 319,
+                          "width": 146,
                           "height": 45,
                           "layout": "vertical",
                           "gap": 4,
@@ -323,7 +364,7 @@
                                       "y": 0,
                                       "fill": "#2C2C2C",
                                       "textGrowth": "fixed-width",
-                                      "width": 1.0192029734487691e+82,
+                                      "width": 5.0888988315139457e+101,
                                       "content": "Tapioca rápida",
                                       "fontFamily": "IBM Plex Sans",
                                       "fontSize": 18,
@@ -334,9 +375,9 @@
                                       "type": "frame",
                                       "id": "KYyyu",
                                       "x": 0,
-                                      "y": 27.999999999999996,
+                                      "y": 27.996181460978317,
                                       "name": "metaA",
-                                      "width": 7.36566854761294e+81,
+                                      "width": 3.6776915925226775e+101,
                                       "gap": 8,
                                       "children": [
                                         {
@@ -356,7 +397,7 @@
                                   "type": "frame",
                                   "id": "x1iHP",
                                   "name": "actionsA",
-                                  "width": 8.319813789260876e+81,
+                                  "width": 4.154098032830305e+101,
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
@@ -489,7 +530,7 @@
                                       "y": 0,
                                       "fill": "#2C2C2C",
                                       "textGrowth": "fixed-width",
-                                      "width": 1.0192029734487691e+82,
+                                      "width": 5.0888988315139457e+101,
                                       "content": "Tapioca rápida",
                                       "fontFamily": "IBM Plex Sans",
                                       "fontSize": 18,
@@ -502,7 +543,7 @@
                                       "x": 0,
                                       "y": 27.999999999999996,
                                       "name": "metaA",
-                                      "width": 7.36566854761294e+81,
+                                      "width": 3.6776915925226775e+101,
                                       "gap": 8,
                                       "children": [
                                         {
@@ -522,7 +563,7 @@
                                   "type": "frame",
                                   "id": "BDFSu",
                                   "name": "actionsA",
-                                  "width": 8.319813789260876e+81,
+                                  "width": 4.154098032830305e+101,
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
@@ -1000,7 +1041,7 @@
                   "type": "frame",
                   "id": "24MgN",
                   "name": "wa",
-                  "width": 81.88215941241202,
+                  "width": 172.76431882482396,
                   "height": 36,
                   "fill": "#E6F5EE",
                   "cornerRadius": 999,
@@ -1023,7 +1064,7 @@
                   "type": "frame",
                   "id": "SWB7E",
                   "name": "ig",
-                  "width": 81.88215941241202,
+                  "width": 172.76431882482385,
                   "height": 36,
                   "fill": "#FDEFF6",
                   "cornerRadius": 999,

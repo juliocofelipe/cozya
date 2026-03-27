@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, ImageDown, Trash2, Wand2, X } from "lucide-react";
+import { Camera, ImageDown, Mic, Trash2, Wand2, X } from "lucide-react";
 import type {
   ChangeEvent,
   ClipboardEvent,
@@ -37,6 +37,9 @@ type ImportModalProps = {
   onCaptureFromCamera: () => void;
   importFileInputRef: RefObject<HTMLInputElement>;
   cameraVideoRef: RefObject<HTMLVideoElement>;
+  speechActive: boolean;
+  onSpeechStart: () => void;
+  onSpeechStop: () => void;
 };
 
 export default function ImportModal({
@@ -65,7 +68,10 @@ export default function ImportModal({
   onCloseCamera,
   onCaptureFromCamera,
   importFileInputRef,
-  cameraVideoRef
+  cameraVideoRef,
+  speechActive,
+  onSpeechStart,
+  onSpeechStop
 }: ImportModalProps) {
   if (!open) return null;
 
@@ -78,15 +84,27 @@ export default function ImportModal({
             <X size={16} aria-hidden="true" />
           </button>
         </div>
-        <label className={styles.fieldGroup}>
+        <div className={styles.fieldGroup}>
           <span className={styles.label}>Cole aqui o texto bruto</span>
-          <textarea
-            className={`${styles.textarea} ${styles.importArea}`}
-            value={importText}
-            onChange={(event) => onTextChange(event.target.value)}
-            onPaste={onImportPaste}
-          />
-        </label>
+          <div className={styles.textareaWrapper}>
+            <textarea
+              className={`${styles.textarea} ${styles.importArea}`}
+              value={importText}
+              onChange={(event) => onTextChange(event.target.value)}
+              onPaste={onImportPaste}
+              placeholder="Ex: 500g de farinha, 2 ovos..."
+            />
+            <button
+              type="button"
+              className={`${styles.textareaMicButton} ${speechActive ? styles.textareaMicActive : ""}`}
+              onClick={() => (speechActive ? onSpeechStop() : onSpeechStart())}
+              aria-label={speechActive ? "Parar ditado" : "Ditar receita"}
+              title={speechActive ? "Parar ditado" : "Ditar receita"}
+            >
+              <Mic size={16} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
         <div className={styles.importHelper}>
           <p className={styles.importHint}>
             Prefere usar uma imagem? Arraste/solte, clique abaixo, abra a câmera ou simplesmente cole a foto da receita

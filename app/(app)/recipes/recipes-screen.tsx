@@ -107,6 +107,7 @@ export default function RecipesScreen() {
   const [importOpen, setImportOpen] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const [speechActive, setSpeechActive] = useState(false);
+  const [speechTarget, setSpeechTarget] = useState<"query" | "import">("query");
   const [speechTranscript, setSpeechTranscript] = useState("");
   const [speechError, setSpeechError] = useState<string | null>(null);
   const [importText, setImportText] = useState("");
@@ -129,6 +130,11 @@ export default function RecipesScreen() {
   const cameraStreamRef = useRef<MediaStream | null>(null);
   const latestOcrFileRef = useRef<File | null>(null);
   const speechRecognitionRef = useRef<VoiceRecognition | null>(null);
+  const speechTargetRef = useRef<"query" | "import">("query");
+
+  useEffect(() => {
+    speechTargetRef.current = speechTarget;
+  }, [speechTarget]);
 
   const stopCameraStream = useCallback(() => {
     if (cameraStreamRef.current) {
@@ -335,7 +341,12 @@ export default function RecipesScreen() {
       const transcript = event.results?.[0]?.[0]?.transcript?.trim().replace(/[.。]+$/, "");
       if (transcript) {
         setSpeechTranscript(transcript);
-        setQuery(transcript);
+        if (speechTargetRef.current === "query") {
+          setQuery(transcript);
+        } else {
+          setImportText((prev) => (prev ? `${prev}\n${transcript}` : transcript));
+          setImportInfo("Texto adicionado via voz");
+        }
       }
       setSpeechActive(false);
     };
@@ -589,11 +600,12 @@ export default function RecipesScreen() {
     }
   };
 
-  const handleStartListening = () => {
+  const handleStartListening = (target: "query" | "import" = "query") => {
     if (!speechSupported || !speechRecognitionRef.current) {
       setSpeechError("Seu navegador não suporta ditado ainda.");
       return;
     }
+    setSpeechTarget(target);
     setSpeechError(null);
     setSpeechTranscript("");
     try {
@@ -629,8 +641,8 @@ export default function RecipesScreen() {
       <SearchBar
         query={query}
         onQueryChange={setQuery}
-        speechActive={speechActive}
-        onSpeechStart={handleStartListening}
+        speechActive={speechActive && speechTarget === "query"}
+        onSpeechStart={() => handleStartListening("query")}
         onSpeechStop={handleStopListening}
       />
 
@@ -696,6 +708,9 @@ export default function RecipesScreen() {
         onCaptureFromCamera={() => void handleCameraCapture()}
         importFileInputRef={importFileInputRef}
         cameraVideoRef={cameraVideoRef}
+        speechActive={speechActive && speechTarget === "import"}
+        onSpeechStart={() => handleStartListening("import")}
+        onSpeechStop={handleStopListening}
       />
 
       <VoiceFeedback
